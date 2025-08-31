@@ -1,7 +1,6 @@
 # server.py
 from flask import Flask, request, redirect
 import datetime
-import json
 import requests
 
 app = Flask(__name__)
@@ -81,7 +80,7 @@ def track_user():
     # Геолокация
     location = get_location(ip)
 
-    # Собираем все данные
+    # Собираем данные (для лога в файл — можно оставить JSON)
     log_data = {
         "timestamp": timestamp,
         "user_id": user_id,
@@ -98,10 +97,24 @@ def track_user():
         "user_agent": ua
     }
 
-    # Логируем в консоль
-    print(f"📌 [TRACK] {json.dumps(log_data, ensure_ascii=False)}")
+    # 🔥 Логируем построчно в консоль
+    print("📌 [TRACK] Начало лога ------------------------")
+    print(f"[TRACK] timestamp: {log_data['timestamp']}")
+    print(f"[TRACK] user_id: {log_data['user_id']}")
+    print(f"[TRACK] phone: {log_data['phone']}")
+    print(f"[TRACK] ip: {log_data['ip']}")
+    print(f"[TRACK] device: {log_data['device']}")
+    print(f"[TRACK] os: {log_data['os']}")
+    print(f"[TRACK] browser: {log_data['browser']}")
+    print(f"[TRACK] language: {log_data['language']}")
+    print(f"[TRACK] referrer: {log_data['referrer']}")
+    print(f"[TRACK] country: {log_data['country']}")
+    print(f"[TRACK] city: {log_data['city']}")
+    print(f"[TRACK] isp: {log_data['isp']}")
+    print(f"[TRACK] user_agent: {log_data['user_agent']}")
+    print("📌 [TRACK] Конец лога -------------------------")
 
-    # Сохраняем в файл
+    # Сохраняем в файл в формате JSON (для удобства анализа)
     with open('log.txt', 'a', encoding='utf-8') as f:
         f.write(json.dumps(log_data, ensure_ascii=False) + '\n')
 
